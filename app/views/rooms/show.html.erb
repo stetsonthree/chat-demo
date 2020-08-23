@@ -1,4 +1,9 @@
-<h1>Rooms#show</h1>
-<p>Find me in app/views/rooms/show.html.erb</p>
+<p id="notice"><%= notice %></p>
 
-<div id="room-id" data-room-id="<%= @room_id %>"></div>
+<p>
+  <strong>Name:</strong>
+  <%= @room.name %>
+</p>
+
+<%= link_to 'Edit', edit_room_path(@room) %> |
+<%= link_to 'Back', rooms_path %>
