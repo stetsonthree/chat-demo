@@ -25,11 +25,10 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new(message_params)
-
     @message.user = current_user
-
     @message.save
-    redirect_to request.referrer
+
+    SendMessageJob.perform_later(@message)
   end
 
   # PATCH/PUT /messages/1

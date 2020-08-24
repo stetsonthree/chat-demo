@@ -1,6 +1,6 @@
 .chat-room {
   height: 100vh;
-  overflow-y: hidden;
+  overflow-y: scroll;
   .message {
     min-height: 59px;
     .content-container {
@@ -40,4 +40,8 @@
       height: 45px;
     }
   }
+}
+
+.card.no-outline {
+  border: none;
 }
