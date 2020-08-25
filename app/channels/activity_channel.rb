@@ -4,11 +4,11 @@ class ActivityChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
+    ActionCable.server.broadcast "activity_channel", user_id: current_user.id, status: 'offline'
   end
 
   def appear
-    ActionCable.server.broadcast "activity_channel", message: "#{current_user.username} has joined!"
+    ActionCable.server.broadcast "activity_channel", user_id: current_user.id, status: 'online'
   end
   
 end
