@@ -27,7 +27,9 @@ document.addEventListener('turbolinks:load', () => {
       // Called when there's incoming data on the websocket for this channel
       const user_element = document.getElementById('user-id');
       const user_id = Number(user_element.getAttribute('data-user-id'));
-      if (data.cableReady && user_id != data.message.user_id) {
+      //  && user_id != data.message.user_id
+      let fromMe = (data.operations.insertAdjacentHtml[0].user_id == user_id)
+      if (data.cableReady && !fromMe) {
         CableReady.perform(data.operations)
       }
     }
