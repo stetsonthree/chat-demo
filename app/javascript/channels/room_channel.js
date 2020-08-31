@@ -1,3 +1,4 @@
+import CableReady from 'cable_ready'
 import consumer from "./consumer"
 
 document.addEventListener('turbolinks:load', () => {
@@ -26,9 +27,8 @@ document.addEventListener('turbolinks:load', () => {
       // Called when there's incoming data on the websocket for this channel
       const user_element = document.getElementById('user-id');
       const user_id = Number(user_element.getAttribute('data-user-id'));
-      if (user_id != data.message.user_id) {
-        const messageContainer = document.getElementById('messages')
-        messageContainer.innerHTML = messageContainer.innerHTML + data.html
+      if (data.cableReady && user_id != data.message.user_id) {
+        CableReady.perform(data.operations)
       }
     }
   });

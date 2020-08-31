@@ -4,6 +4,11 @@ class SendMessageJob < ApplicationJob
   def perform(message)
     html = ApplicationController.render(partial: 'messages/theirs', locals: { message: message })
 
-    ActionCable.server.broadcast "room_channel_#{message.room_id}", html: html, message: message
+    cable_ready["room_channel_#{message.room_id}"].insert_adjacent_html(
+      selector: '#messages',
+      position: 'beforeend',
+      html: html
+    )
+    cable_ready.broadcast
   end
 end
