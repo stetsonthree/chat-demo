@@ -3,7 +3,7 @@ import consumer from "./consumer"
 
 document.addEventListener('turbolinks:load', () => {
   const room_element = document.getElementById('room-id');
-  const room_id = Number(room_element.getAttribute('data-room-id'));
+  const room_id = room_element.getAttribute('data-room-id');
 
   // window.subscriptions = consumer.subscriptions
   // console.log(consumer.subscriptions)
@@ -25,13 +25,7 @@ document.addEventListener('turbolinks:load', () => {
     
     received(data) {
       // Called when there's incoming data on the websocket for this channel
-      const user_element = document.getElementById('user-id');
-      const user_id = Number(user_element.getAttribute('data-user-id'));
-      //  && user_id != data.message.user_id
-      let fromMe = (data.operations.insertAdjacentHtml[0].user_id == user_id)
-      if (data.cableReady && !fromMe) {
-        CableReady.perform(data.operations)
-      }
+      CableReady.perform(data.operations)
     }
   });
 })
