@@ -3,14 +3,22 @@ class SendMessageJob < ApplicationJob
   queue_as :default
 
   def perform(message)
-    html = ApplicationController.render(partial: 'messages/theirs', locals: { message: message })
-
-    cable_ready["room_channel_#{message.room_id}"].insert_adjacent_html(
-      selector: '#messages',
-      position: 'beforeend',
-      html: html,
-      user_id: message.user_id
+    html = ApplicationController.render(
+      partial: 'messages/theirs', 
+      locals: { message: message }
     )
-    cable_ready.broadcast
+
+    room = message.room
+    room.current_users.each do |user|
+      unless message.sent_by?(user)
+        stream = "room_#{message.room_id}_user_#{user.id}"
+        cable_ready[stream].insert_adjacent_html(
+          selector: '#messages',
+          position: 'beforeend',
+          html: html
+        )
+        cable_ready.broadcast
+      end
+    end
   end
 end
